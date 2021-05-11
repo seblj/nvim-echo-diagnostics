@@ -37,11 +37,10 @@ M.find_line_diagnostic = function(show_entire_diagnostic)
         end
 
         -- Check width of mesasge
-        local windowlen = vim.api.nvim_get_option('columns') - 10 -- 10 because 6 is magic number and 4 is ' ...'
-        local size = #msg - windowlen
+        local windowlen = vim.api.nvim_get_option('columns')
         if #msg > windowlen then
             -- Remove last part of message and add ' ...' to indicate that the msg is truncated
-            msg = string.sub(msg, 1, #msg - size) .. ' ...'
+            msg = string.sub(msg, 1, windowlen - 20) .. ' ...'
         end
         return msg
     end
