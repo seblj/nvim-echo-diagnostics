@@ -2,8 +2,9 @@ local M = {}
 local cmd = vim.cmd
 
 -- Options
-local show_diagnostic_number = true
-
+local opt = {
+    show_diagnostic_number = true
+}
 
 M.find_line_diagnostic = function(show_entire_diagnostic)
     local diagnostics = vim.lsp.diagnostic.get_line_diagnostics()
@@ -11,7 +12,7 @@ M.find_line_diagnostic = function(show_entire_diagnostic)
     if not vim.tbl_isempty(diagnostics) then
         for k, _ in pairs(diagnostics) do
             if diagnostics[k].message then
-                if show_diagnostic_number then
+                if opt.show_diagnostic_number then
                     msg = msg .. k .. ": "
                 end
                 msg = msg .. diagnostics[k].message
@@ -37,10 +38,11 @@ M.find_line_diagnostic = function(show_entire_diagnostic)
         end
 
         -- Check width of mesasge
+        local winmargin = 20
         local windowlen = vim.api.nvim_get_option('columns')
-        if #msg > windowlen then
+        if (#msg / (windowlen - winmargin)) > height then
             -- Remove last part of message and add ' ...' to indicate that the msg is truncated
-            msg = string.sub(msg, 1, windowlen - 20) .. ' ...'
+            msg = string.sub(msg, 1, (height * windowlen) - winmargin) .. ' ...'
         end
         return msg
     end
@@ -63,8 +65,8 @@ M.echo_entire_diagnostic = function()
     cmd([[autocmd CursorMoved * ++once echo " "]])
 end
 
-M.setup = function(opts)
-    if show_diagnostic_number ~= nil then show_diagnostic_number = opts.show_diagnostic_number end
+M.setup = function(user_options)
+    opt = vim.tbl_extend('force', opt, user_options)
 end
 
 return M
