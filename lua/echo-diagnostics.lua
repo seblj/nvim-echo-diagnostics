@@ -53,7 +53,7 @@ M.echo_line_diagnostic = function()
     if not require('echo-diagnostics').find_line_diagnostic(false) then
         return
     end
-    cmd([[echo luaeval('require("echo-diagnostics").find_line_diagnostic(false)')]])
+    vim.api.nvim_echo({{require('echo-diagnostics').find_line_diagnostic(false)}}, false, {})
     cmd([[autocmd CursorMoved * ++once echo " "]])
 end
 
@@ -61,7 +61,7 @@ M.echo_entire_diagnostic = function()
     if not require('echo-diagnostics').find_line_diagnostic(true) then
         return
     end
-    cmd([[echo luaeval('require("echo-diagnostics").find_line_diagnostic(true)')]])
+    vim.api.nvim_echo({{require('echo-diagnostics').find_line_diagnostic(true)}}, false, {})
     cmd([[autocmd CursorMoved * ++once echo " "]])
 end
 
