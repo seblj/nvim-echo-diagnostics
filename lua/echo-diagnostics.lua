@@ -79,6 +79,7 @@ M.echo_entire_diagnostic = function()
 end
 
 M.setup = function(user_options)
+    user_options = user_options or {}
     opt = vim.tbl_extend('force', opt, user_options)
 end
 
