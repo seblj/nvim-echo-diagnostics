@@ -4,6 +4,7 @@ local cmd = vim.cmd
 -- Options
 local opt = {
     show_diagnostic_number = true,
+    show_diagnostic_source = false,
 }
 
 M.find_line_diagnostic = function(show_entire_diagnostic)
@@ -29,6 +30,9 @@ M.find_line_diagnostic = function(show_entire_diagnostic)
                     msg = msg .. k .. ': '
                 end
                 msg = msg .. diagnostics[k].message
+                if opt.show_diagnostic_source and diagnostics[k].source then
+                    msg = msg .. ' (' .. diagnostics[k].source .. ')'
+                end
                 if k < #diagnostics then
                     msg = msg .. '\n'
                 end
