@@ -5,12 +5,14 @@ This plugin uses nvim-lspconfig, and provides functions to echo the entire messa
 ## Installation
 
 ### packer.nvim
+
 ```Lua
 use 'seblj/nvim-echo-diagnostics'
 use 'neovim/nvim-lspconfig'
 ```
 
 ### vim-plug
+
 ```Vim
 call plug#begin()
 
@@ -21,14 +23,16 @@ call plug#end()
 ```
 
 ## Setup
+
 ```Lua
 require("echo-diagnostics").setup{
-    show_diagnostic_number = true
-    show_diagnostic_source = false
+    show_diagnostic_number = true,
+    show_diagnostic_source = false,
 }
 ```
 
 ## Usage
+
 You can now utilize the functions to echo the entire message or a message that fits in the commandline based on `set cmdheight`
 
 ```Vim
@@ -37,7 +41,7 @@ You can now utilize the functions to echo the entire message or a message that f
 " This will echo the diagnostics on CursorHold, and will also consider cmdheight
 autocmd CursorHold * lua require('echo-diagnostics').echo_line_diagnostic()
 
-" This will echo the entire diagnostic message. 
+" This will echo the entire diagnostic message.
 " Should prompt you with Press ENTER or type command to continue.
 
 nnoremap <leader>cd <cmd>lua require("echo-diagnostics").echo_entire_diagnostic()<CR>
