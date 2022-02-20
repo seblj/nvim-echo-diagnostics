@@ -24,7 +24,7 @@ call plug#end()
 
 ## Setup
 
-```Lua
+```lua
 require("echo-diagnostics").setup{
     show_diagnostic_number = true,
     show_diagnostic_source = false,
@@ -35,7 +35,7 @@ require("echo-diagnostics").setup{
 
 You can now utilize the functions to echo the entire message or a message that fits in the commandline based on `set cmdheight`
 
-```Vim
+```vim
 " NOTE: You should consider setting updatetime to less than default.
 " This could be set with `set updatetime=300`
 " This will echo the diagnostics on CursorHold, and will also consider cmdheight
