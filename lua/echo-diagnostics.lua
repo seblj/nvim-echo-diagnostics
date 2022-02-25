@@ -46,31 +46,36 @@ M.find_line_diagnostic = function(show_entire_diagnostic)
                     full_msg = full_msg .. msg
                 end
 
-                -- Check how many rows the diagnostics currently will fill
-                local remaining_height = cmdheight - used_height
-                local msg_height = math.ceil(#msg / windowlen)
-                local max_len = remaining_height * windowlen - winmargin
+                -- Diagnostic sent from language server may contain newlines
+                local lines = vim.split(msg, '\n')
+                for i, line in ipairs(lines) do
+                    -- Check how many rows the diagnostics currently will fill
+                    local remaining_height = cmdheight - used_height
+                    local msg_height = math.ceil(#line / windowlen)
+                    local max_len = remaining_height * windowlen - winmargin
 
-                if used_height + msg_height < cmdheight then
-                    trunc_msg = trunc_msg .. msg .. '\n'
-                else
-                    trunc_msg = trunc_msg .. string.sub(msg, 1, max_len)
-                    -- Append ... if more diagnostics exists or current msg is too long
-                    if #diagnostics > k or #msg > max_len then
-                        trunc_msg = trunc_msg .. ' ...'
+                    if used_height + msg_height < cmdheight then
+                        trunc_msg = trunc_msg .. line .. '\n'
+                    else
+                        trunc_msg = trunc_msg .. string.sub(line, 1, max_len)
+                        -- Append ... if more diagnostics exists or current msg is too long
+                        if #diagnostics > k or #lines > i or #line > max_len then
+                            trunc_msg = trunc_msg .. ' ...'
+                        end
+                        if not show_entire_diagnostic then
+                            return trunc_msg
+                        end
                     end
-                    if not show_entire_diagnostic then
-                        return trunc_msg
-                    end
+                    used_height = used_height + msg_height
                 end
-                used_height = used_height + msg_height
             end
         end
 
         -- Check if we should echo entire diagnostic
         if show_entire_diagnostic then
-            if #diagnostics <= cmdheight then
-                full_msg = full_msg .. string.rep('\n', (cmdheight - #diagnostics) + 1)
+            local tbl = vim.split(full_msg, '\n')
+            if #tbl <= cmdheight then
+                full_msg = full_msg .. string.rep('\n', (cmdheight - #tbl) + 1)
             end
             return full_msg
         end
