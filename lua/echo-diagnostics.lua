@@ -55,7 +55,12 @@ M.find_line_diagnostic = function(show_entire_diagnostic)
                     local max_len = remaining_height * windowlen - winmargin
 
                     if used_height + msg_height < cmdheight then
-                        trunc_msg = trunc_msg .. line .. '\n'
+                        trunc_msg = trunc_msg .. line
+                        -- Avoid edge case where the appended newline would create
+                        -- a prompt of press enter to continue.
+                        if #line ~= windowlen then
+                            trunc_msg = trunc_msg .. '\n'
+                        end
                     else
                         trunc_msg = trunc_msg .. string.sub(line, 1, max_len)
                         -- Append ... if more diagnostics exists or current msg is too long
